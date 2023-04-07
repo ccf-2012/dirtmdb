@@ -28,20 +28,24 @@ def rename_dirs_with_tmdb(root_dir):
                     tree = ET.parse(nfo_path)
                     root = tree.getroot()
 
-                    # 查找根节点中的 <tmdb> 标识
+                    # 查找根节点中的 <tmdbid> 标识
                     tmdb_elem = root.find('tmdbid')
                     if tmdb_elem is not None:
                         nfo_found = True
                         tmdb_id = tmdb_elem.text
                         original_dirname = os.path.basename(dirpath)
-                        if not re.search(r'tmdb-\d+', original_dirname, re.I):
+                        m = re.search(r'tmdb-\d+', original_dirname, re.I)
+                        if not m:
                             new_dirname = f"{original_dirname} {{tmdb-{tmdb_id}}}"
-                            new_dirpath = os.path.join(
-                                os.path.dirname(dirpath), new_dirname)
+                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
                             print(f"{index} : {original_dirname} ==> {new_dirname}")
                             os.rename(dirpath, new_dirpath)
                         else:
-                            print(f"{index} : {original_dirname} skip")
+                            # print(f"{index} : {original_dirname} origin TMDb name.")
+                            new_dirname =  original_dirname.replace(m.group(0), f"tmdb-{tmdb_id}")
+                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                            print(f"{index} : {original_dirname} ==> {new_dirname}")
+                            os.rename(dirpath, new_dirpath)
                         break
             if not nfo_found:
                 thedirname = os.path.basename(dirpath)
