@@ -24,12 +24,18 @@ def rename_dirs_with_tmdb(root_dir):
 
                 if subfile.endswith('.nfo'):
                     nfo_path = os.path.join(dirpath, subfile)
+                    if not os.path.isfile(nfo_path):
+                        continue
+                    
+                    tmdb_elem = None
+                    try:
+                        tree = ET.parse(nfo_path)
+                        root = tree.getroot()
+                        # 查找根节点中的 <tmdbid> 标识
+                        tmdb_elem = root.find('tmdbid')
+                    except:
+                        continue
 
-                    tree = ET.parse(nfo_path)
-                    root = tree.getroot()
-
-                    # 查找根节点中的 <tmdbid> 标识
-                    tmdb_elem = root.find('tmdbid')
                     if tmdb_elem is not None:
                         nfo_found = True
                         tmdb_id = tmdb_elem.text
