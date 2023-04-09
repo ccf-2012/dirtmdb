@@ -10,7 +10,7 @@ def uselessFile(entryName):
 
 
 def rename_dirs_with_tmdb(root_dir):
-    fo = open("sus.txt", "w")
+    fo = open("sus.txt", "w", encoding='utf-8')
     for index, dirname in enumerate(os.listdir(root_dir)):
         if uselessFile(dirname):
             continue
@@ -83,7 +83,7 @@ def rename_movie_dirs_with_tmdb(root_dir):
 
                 if subfile.endswith('.nfo'):
                     nfo_path = os.path.join(dirpath, subfile)
-                    with open(nfo_path, 'r') as f:
+                    with open(nfo_path, 'r', encoding='utf-8') as f:
                         nfo_content = f.read()
                     match = re.search(
                         r'<uniqueid.*type="tmdb".*>([0-9]+)</uniqueid>', nfo_content)
