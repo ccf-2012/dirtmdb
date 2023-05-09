@@ -111,8 +111,8 @@ def rename_dirs_with_imdb(root_dir):
                         root = tree.getroot()
                         # 查找根节点中的 <tmdbid> 标识
                         imdb_elem = root.find('imdbid')
-                        if (imdb_elem.text is None):
-                            imdb_elem = root.find('uniqueid')
+                        # if (imdb_elem.text is None):
+                        #     imdb_elem = root.find('uniqueid')
                         # 查找根节点中的 <title> 标识
                         title_elem = root.find('title')
                         # 查找根节点中的 <year> 标识
