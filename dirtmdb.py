@@ -46,21 +46,26 @@ def rename_dirs_with_tmdb(root_dir):
                         nfo_found = True
                         tmdb_id = tmdb_elem.text
                         original_dirname = os.path.basename(dirpath)
+                        original_dirname = re.sub(r'\{tmdb-\d+\}', '', original_dirname, re.I)
+                        original_dirname = re.sub(r'\{imdb-tt\d+\}', '', original_dirname, re.I)
                         newdir_basename = original_dirname
                         if title_elem is not None and year_elem is not None:
                             newdir_basename = f"{title_elem.text} ({year_elem.text})"
 
-                        m = re.search(r'tmdb-\d+', original_dirname, re.I)
-                        if not m:
-                            new_dirname = f"{newdir_basename} {{tmdb-{tmdb_id}}}"
-                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
-                            print(f"{index} : {newdir_basename} ==> {new_dirname}")
-                            # os.rename(dirpath, new_dirpath)
-                        else:
-                            # print(f"{index} : {original_dirname} origin TMDb name.")
-                            new_dirname =  original_dirname.replace(m.group(0), f"tmdb-{tmdb_id}")
-                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
-                            print(f"{index} : {original_dirname} ==> {new_dirname}")
+                        new_dirname = f"{newdir_basename} {{tmdb-{tmdb_id}}}"
+                        new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        print(f"{index} : {newdir_basename} ==> {new_dirname}")
+                        # m = re.search(r'tmdb-\d+', original_dirname, re.I)
+                        # if not m:
+                        #     new_dirname = f"{newdir_basename} {{tmdb-{tmdb_id}}}"
+                        #     new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        #     print(f"{index} : {newdir_basename} ==> {new_dirname}")
+                        #     # os.rename(dirpath, new_dirpath)
+                        # else:
+                        #     # print(f"{index} : {original_dirname} origin TMDb name.")
+                        #     new_dirname =  original_dirname.replace(m.group(0), f"tmdb-{tmdb_id}")
+                        #     new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        #     print(f"{index} : {original_dirname} ==> {new_dirname}")
                         if os.path.exists(new_dirpath):
                             print(f"{new_dirpath} exists, skip")
                             break
@@ -106,6 +111,8 @@ def rename_dirs_with_imdb(root_dir):
                         root = tree.getroot()
                         # 查找根节点中的 <tmdbid> 标识
                         imdb_elem = root.find('imdbid')
+                        if (imdb_elem.text is None):
+                            imdb_elem = root.find('uniqueid')
                         # 查找根节点中的 <title> 标识
                         title_elem = root.find('title')
                         # 查找根节点中的 <year> 标识
@@ -117,21 +124,26 @@ def rename_dirs_with_imdb(root_dir):
                         nfo_found = True
                         tmdb_id = imdb_elem.text
                         original_dirname = os.path.basename(dirpath)
+                        original_dirname = re.sub(r'\{tmdb-\d+\}', '', original_dirname, re.I)
+                        original_dirname = re.sub(r'\{imdb-tt\d+\}', '', original_dirname, re.I)
                         newdir_basename = original_dirname
                         if title_elem is not None and year_elem is not None:
                             newdir_basename = f"{title_elem.text} ({year_elem.text})"
 
-                        m = re.search(r'imdb-tt\d+', original_dirname, re.I)
-                        if not m:
-                            new_dirname = f"{newdir_basename} {{imdb-{tmdb_id}}}"
-                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
-                            print(f"{index} : {newdir_basename} ==> {new_dirname}")
-                            # os.rename(dirpath, new_dirpath)
-                        else:
-                            # print(f"{index} : {original_dirname} origin TMDb name.")
-                            new_dirname =  original_dirname.replace(m.group(0), f"imdb-{tmdb_id}")
-                            new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
-                            print(f"{index} : {original_dirname} ==> {new_dirname}")
+                        new_dirname = f"{newdir_basename} {{tmdb-{tmdb_id}}}"
+                        new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        print(f"{index} : {newdir_basename} ==> {new_dirname}")
+                        # m = re.search(r'imdb-tt\d+', original_dirname, re.I)
+                        # if not m:
+                        #     new_dirname = f"{newdir_basename} {{imdb-{tmdb_id}}}"
+                        #     new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        #     print(f"{index} : {newdir_basename} ==> {new_dirname}")
+                        #     # os.rename(dirpath, new_dirpath)
+                        # else:
+                        #     # print(f"{index} : {original_dirname} origin TMDb name.")
+                        #     new_dirname =  original_dirname.replace(m.group(0), f"imdb-{tmdb_id}")
+                        #     new_dirpath = os.path.join( os.path.dirname(dirpath), new_dirname)
+                        #     print(f"{index} : {original_dirname} ==> {new_dirname}")
                         if os.path.exists(new_dirpath):
                             print(f"{new_dirpath} exists, skip")
                             break
